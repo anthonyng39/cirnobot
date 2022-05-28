@@ -1,16 +1,15 @@
-# bot.py
 import os
+import hikari
 
-import discord
-from dotenv import load_dotenv
+TOKEN = os.environ['DISCORD_TOKEN']
+bot = hikari.GatewayBot(token=TOKEN)
 
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
+@bot.listen(hikari.GuildMessageCreateEvent)
+async def print_message(event):
+    print(event.content)
 
-client = discord.Client()
+@bot.listen(hikari.StartedEvent)
+async def bot_started(event):
+    print('Bot has started')
 
-@client.event
-async def on_ready():
-    print(f'{client.user} has connected to Discord!')
-
-client.run(TOKEN)
+bot.run()
